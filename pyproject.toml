@@ -17,7 +17,12 @@ dev = [
 
 [project]
 authors = [{email = "mattcoul7@gmail.com", name = "Matt Coulter"}]
-dependencies = []
+dependencies = [
+  "ab-client-token-validator>=0.1.0",
+  "ab-client-user>=0.1.0",
+  "ab-dependency>=0.1.6",
+  "fastapi>=0.115.14,<0.116",
+]
 description = "Glue token validation + user service to provide identity context in FastAPI"
 name = "ab-identity-context"
 readme = "README.md"
