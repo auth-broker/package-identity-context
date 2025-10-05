@@ -20,7 +20,7 @@ authors = [{email = "mattcoul7@gmail.com", name = "Matt Coulter"}]
 dependencies = [
   "ab-client-token-validator>=0.1.0",
   "ab-client-user>=0.1.0",
-  "ab-dependency>=0.1.6",
+  "ab-dependency>=0.1.7",
   "fastapi>=0.115.14,<0.116",
   "pydantic>=2.11.10",
 ]
