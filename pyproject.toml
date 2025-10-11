@@ -22,7 +22,6 @@ dependencies = [
   "ab-client-token-validator>=0.1.0",
   "ab-client-user>=0.1.0",
   "ab-dependency>=0.1.9",
-  "fastapi>=0.115.14,<0.116",
   "pydantic>=2.11.10",
 ]
 description = "Glue token validation + user service to provide identity context in FastAPI"
@@ -30,6 +29,12 @@ name = "ab-identity-context"
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 version = "0.1.0"
+
+[project.optional-dependencies]
+all = [
+  "fastapi>=0.115.14",
+]
+fastapi = ["fastapi>=0.115.14"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/ab_core"]
