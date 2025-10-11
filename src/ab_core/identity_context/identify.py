@@ -40,7 +40,7 @@ async def identify(
         if claims is None:
             raise IdentificationError("Token validation failed.")
         if type(claims).__name__ == "HTTPValidationError":
-            raise IdentificationError(claims)
+            raise ValueError(f"Bad token validation request: {claims}")
 
     # 2. upsert the user
     async with user_client as user_client:
@@ -57,7 +57,7 @@ async def identify(
         if user is None:
             raise IdentificationError("User validation failed.")
         if type(user).__name__ == "HTTPValidationError":
-            raise IdentificationError(user)
+            raise ValueError(f"Bad user validation request: {user}")
 
     return IdentityContext(
         token=token,
