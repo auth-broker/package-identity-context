@@ -6,8 +6,6 @@ from pydantic import BaseModel, Field
 
 from ab_core.dependency.pydanticize import pydanticize_type
 
-from . import _pydanticize_unset  # noqa: F401
-
 User: type[BaseModel] = pydanticize_type(AttrsUser)
 ValidatedOIDCClaims: type[BaseModel] = pydanticize_type(AttrsOIDCClaims)
 
