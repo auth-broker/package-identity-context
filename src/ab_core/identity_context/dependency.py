@@ -2,7 +2,13 @@
 
 from typing import Annotated
 
-from fastapi import Header, HTTPException, status
+try:
+    from fastapi import Header, HTTPException, status
+except ImportError as e:
+    raise RuntimeError(
+        "`ab_core.identity_context.dependency::get_identity_context` requires FastAPI dependency."
+        " Please install ab-identity-context[fastapi] to use this module."
+    ) from e
 
 from .exceptions import IdentificationError
 from .identify import identify
