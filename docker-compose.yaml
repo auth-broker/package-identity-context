@@ -1,0 +1,24 @@
+services:
+  service-token-validator-mock:
+    image: mattcoulter7/prism-mockserver:latest
+    environment:
+      SERVICE: service-token-validator
+      SERVICE_PORT: 8011
+    volumes:
+      - "./prism/service-token-validator:/app/prism/service-token-validator"
+    ports:
+      - "8011:8011"
+    restart: unless-stopped
+    container_name: service-token-validator-mock
+
+  service-user-mock:
+    image: mattcoulter7/prism-mockserver:latest
+    environment:
+      SERVICE: service-user
+      SERVICE_PORT: 8012
+    volumes:
+      - "./prism/service-user:/app/prism/service-user"
+    ports:
+      - "8012:8012"
+    restart: unless-stopped
+    container_name: service-user-mock

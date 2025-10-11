@@ -1,0 +1,33 @@
+{
+  "paths": {
+    "/validate": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Validated OIDC token -> claims",
+            "content": {
+              "application/json": {
+                "example": {
+                  "iss": "https://issuer.example.com",
+                  "sub": "sub-123",
+                  "aud": "my-client-id",
+                  "exp": 1893456000,
+                  "iat": 1731249600,
+                  "auth_time": 1731246000,
+                  "acr": "urn:mace:incommon:iap:silver",
+                  "email": "jane.doe@example.com",
+                  "email_verified": true,
+                  "name": "Jane Doe",
+                  "given_name": "Jane",
+                  "preferred_username": "jane",
+                  "nickname": "jane",
+                  "groups": ["devs", "admins"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

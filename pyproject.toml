@@ -13,7 +13,7 @@ dev = [
   "pytest>=8.4.1,<9",
   "ruff>=0.12.3,<0.13",
   "tox>=4.27.0,<5",
-  "create-prism-mockserver"
+  "create-prism-mockserver>=0.1.1"
 ]
 
 [project]

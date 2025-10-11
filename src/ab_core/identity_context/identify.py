@@ -5,6 +5,7 @@ from typing import Annotated
 from ab_client_token_validator import Client as TokenValidatorClient
 from ab_client_token_validator.api.token_validator import validate_token_validate_post
 from ab_client_token_validator.models import ValidateTokenRequest
+
 from ab_client_user.api.user import upsert_user_by_oidc_user_oidc_put
 from ab_client_user.client import Client as UserClient
 from ab_client_user.models import UpsertByOIDCRequest
@@ -38,6 +39,8 @@ async def identify(
         )
         if claims is None:
             raise IdentificationError("Token validation failed.")
+        if type(claims).__name__ == "HTTPValidationError":
+            raise IdentificationError(claims)
 
     # 2. upsert the user
     async with user_client as user_client:
@@ -51,8 +54,10 @@ async def identify(
                 preferred_username=claims.nickname or claims.name or claims.given_name,
             ),
         )
-        if claims is None:
+        if user is None:
             raise IdentificationError("User validation failed.")
+        if type(user).__name__ == "HTTPValidationError":
+            raise IdentificationError(user)
 
     return IdentityContext(
         token=token,
