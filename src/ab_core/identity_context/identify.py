@@ -35,6 +35,7 @@ async def identify(
                 token=token,
             ),
         )
+        assert claims is not None, "Unsuccessful token validation. Please check the logs."
 
     # 2. upsert the user
     async with user_client as user_client:
@@ -48,6 +49,7 @@ async def identify(
                 preferred_username=claims.nickname or claims.name or claims.given_name,
             ),
         )
+        assert user is not None, "Unsuccessful user upsertion. Please check the logs."
 
     return IdentityContext(
         token=token,
