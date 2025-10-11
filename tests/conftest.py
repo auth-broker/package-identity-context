@@ -1,5 +1,7 @@
 """Test fixtures."""
+
 import pytest
+
 
 @pytest.fixture(autouse=True)
 def global_env(monkeypatch):

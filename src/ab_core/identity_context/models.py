@@ -4,11 +4,13 @@ from ab_client_token_validator.models import ValidatedOIDCClaims as AttrsOIDCCla
 from ab_client_user.models import User as AttrsUser
 from pydantic import BaseModel, Field
 
-from . import _pydanticize_unset  # noqa: F401
 from ab_core.dependency.pydanticize import pydanticize_type
+
+from . import _pydanticize_unset  # noqa: F401
 
 User: type[BaseModel] = pydanticize_type(AttrsUser)
 ValidatedOIDCClaims: type[BaseModel] = pydanticize_type(AttrsOIDCClaims)
+
 
 class IdentityContext(BaseModel):
     """Per-request identity context resolved from the bearer token."""

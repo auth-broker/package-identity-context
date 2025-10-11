@@ -7,11 +7,11 @@ from ab_client_token_validator.api.token_validator import validate_token_validat
 from ab_client_token_validator.models import ValidateTokenRequest
 from ab_client_user.api.user import upsert_user_by_oidc_user_oidc_put
 from ab_client_user.client import Client as UserClient
-from ab_client_user.models import UpsertByOIDCRequest, User
+from ab_client_user.models import UpsertByOIDCRequest
 
-from ab_core.dependency.loaders import ObjectLoaderEnvironment
 from ab_core.dependency import Depends, inject
-from ab_core.dependency.pydanticize.cast.adaptors.attrs import create_model
+from ab_core.dependency.loaders import ObjectLoaderEnvironment
+
 from .models import IdentityContext, User, ValidatedOIDCClaims
 
 
