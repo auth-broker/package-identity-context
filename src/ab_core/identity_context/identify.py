@@ -12,6 +12,7 @@ from ab_client_user.models import UpsertByOIDCRequest
 from ab_core.dependency import Depends, inject
 from ab_core.dependency.loaders import ObjectLoaderEnvironment
 
+from .exceptions import IdentificationError
 from .models import IdentityContext, User, ValidatedOIDCClaims
 
 
@@ -35,7 +36,8 @@ async def identify(
                 token=token,
             ),
         )
-        assert claims is not None, "Unsuccessful token validation. Please check the logs."
+        if claims is None:
+            raise IdentificationError("Token validation failed.")
 
     # 2. upsert the user
     async with user_client as user_client:
@@ -49,7 +51,8 @@ async def identify(
                 preferred_username=claims.nickname or claims.name or claims.given_name,
             ),
         )
-        assert user is not None, "Unsuccessful user upsertion. Please check the logs."
+        if claims is None:
+            raise IdentificationError("User validation failed.")
 
     return IdentityContext(
         token=token,
