@@ -30,34 +30,32 @@ async def identify(
 ) -> IdentityContext:
     """Identity a user given a valid token."""
     # 1. validate the token
-    async with token_validator_client as token_validator_client:
-        claims = await validate_token_validate_post.asyncio(
-            client=token_validator_client,
-            body=ValidateTokenRequest(
-                token=token,
-            ),
-        )
-        if claims is None:
-            raise IdentificationError("Token validation failed.")
-        if type(claims).__name__ == "HTTPValidationError":
-            raise ValueError(f"Bad token validation request: {claims}")
+    claims = await validate_token_validate_post.asyncio(
+        client=token_validator_client,
+        body=ValidateTokenRequest(
+            token=token,
+        ),
+    )
+    if claims is None:
+        raise IdentificationError("Token validation failed.")
+    if type(claims).__name__ == "HTTPValidationError":
+        raise ValueError(f"Bad token validation request: {claims}")
 
     # 2. upsert the user
-    async with user_client as user_client:
-        user = await upsert_user_by_oidc_user_oidc_put.asyncio(
-            client=user_client,
-            body=UpsertByOIDCRequest(
-                oidc_sub=claims.sub,
-                oidc_iss=claims.iss,
-                email=claims.email,
-                display_name=claims.given_name or claims.name or claims.nickname,
-                preferred_username=claims.nickname or claims.name or claims.given_name,
-            ),
-        )
-        if user is None:
-            raise IdentificationError("User validation failed.")
-        if type(user).__name__ == "HTTPValidationError":
-            raise ValueError(f"Bad user validation request: {user}")
+    user = await upsert_user_by_oidc_user_oidc_put.asyncio(
+        client=user_client,
+        body=UpsertByOIDCRequest(
+            oidc_sub=claims.sub,
+            oidc_iss=claims.iss,
+            email=claims.email,
+            display_name=claims.given_name or claims.name or claims.nickname,
+            preferred_username=claims.nickname or claims.name or claims.given_name,
+        ),
+    )
+    if user is None:
+        raise IdentificationError("User validation failed.")
+    if type(user).__name__ == "HTTPValidationError":
+        raise ValueError(f"Bad user validation request: {user}")
 
     return IdentityContext(
         token=token,
