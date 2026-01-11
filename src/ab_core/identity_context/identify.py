@@ -5,12 +5,11 @@ from typing import Annotated
 from ab_client_token_validator import Client as TokenValidatorClient
 from ab_client_token_validator.api.token_validator import validate_token_validate_post
 from ab_client_token_validator.models import ValidateTokenRequest
-
 from ab_client_user.api.user import upsert_user_by_oidc_user_oidc_put
 from ab_client_user.client import Client as UserClient
 from ab_client_user.models import UpsertByOIDCRequest
 
-from ab_core.dependency import Depends, inject
+from ab_core.dependency import Depends, inject, pydanticize_type
 from ab_core.dependency.loaders import ObjectLoaderEnvironment
 
 from .exceptions import IdentificationError
@@ -22,10 +21,14 @@ async def identify(
     token: str,
     token_validator_client: Annotated[
         TokenValidatorClient,
-        Depends(ObjectLoaderEnvironment[TokenValidatorClient](env_prefix="TOKEN_VALIDATOR_CLIENT"), persist=True),
+        Depends(
+            ObjectLoaderEnvironment[pydanticize_type(TokenValidatorClient)](env_prefix="TOKEN_VALIDATOR_CLIENT"),
+            persist=True,
+        ),
     ],
     user_client: Annotated[
-        UserClient, Depends(ObjectLoaderEnvironment[UserClient](env_prefix="USER_CLIENT"), persist=True)
+        UserClient,
+        Depends(ObjectLoaderEnvironment[pydanticize_type(UserClient)](env_prefix="USER_CLIENT"), persist=True),
     ],
 ) -> IdentityContext:
     """Identity a user given a valid token."""
