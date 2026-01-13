@@ -19,8 +19,8 @@ dev = [
 [project]
 authors = [{email = "mattcoul7@gmail.com", name = "Matt Coulter"}]
 dependencies = [
-  "ab-client-token-validator>=0.1.0,<0.2.0",
-  "ab-client-user>=0.1.0,<0.2.0",
+  "ab-client-token-validator>=1.1.1,<2",
+  "ab-client-user>=1.1.1,<2",
   "ab-dependency>=0.2.0,<0.3.0",
   "pydantic>=2.11.10",
 ]
@@ -28,7 +28,7 @@ description = "Glue token validation + user service to provide identity context 
 name = "ab-identity-context"
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
-version = "0.1.4"
+version = "0.2.0"
 
 [project.optional-dependencies]
 all = [
