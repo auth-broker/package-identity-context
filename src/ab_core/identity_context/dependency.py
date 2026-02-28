@@ -3,7 +3,7 @@
 from typing import Annotated
 
 try:
-    from fastapi import Header, HTTPException, status
+    from fastapi import Cookie, Header, HTTPException, status
 except ImportError as e:
     raise RuntimeError(
         "`ab_core.identity_context.dependency::get_identity_context` requires FastAPI dependency."
@@ -16,23 +16,29 @@ from .models import IdentityContext
 
 
 async def get_identity_context(
+    access_token: Annotated[str | None, Cookie(alias="access_token")] = None,
     authorization: Annotated[str | None, Header()] = None,
 ) -> IdentityContext:
     """FastAPI dependency that returns IdentityContext.
 
     Usage:
-        identity: Annotated[IdentityContext, Depends(identity_context)]
+        identity: Annotated[IdentityContext, Depends(get_identity_context)]
     """
-    if not authorization or not authorization.lower().startswith("bearer "):
+    token: str | None = None
+
+    if access_token:
+        token = access_token
+    elif authorization and authorization.lower().startswith("bearer "):
+        _, token = authorization.split(" ", 1)
+
+    if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing bearer token",
+            detail="Missing access token",
         )
-    _, token = authorization.split(" ", 1)
+
     try:
-        return await identify(
-            token=token,
-        )
+        return await identify(token=token)
     except IdentificationError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
