@@ -58,7 +58,6 @@ async def identify(
         user = await user_client.upsert_user_by_oidc_user_oidc_put(
             data=UpsertByOIDCRequest(
                 oidc_sub=claims.sub,
-                oidc_iss=claims.iss,
                 email=claims.email,
                 display_name=claims.given_name or claims.name or claims.nickname,
                 preferred_username=claims.nickname or claims.name or claims.given_name,
